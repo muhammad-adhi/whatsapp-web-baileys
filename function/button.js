@@ -23,11 +23,4 @@ const sections = [
    },
 ];
 
-const listPesan = {
-   text: "Selamat Datang di Bot whatsapp kami\nsilakan tekan menu untuk menggunakan feature bot\n\n\n",
-   footer: "©Aldhi2022",
-   buttonText: "Menu",
-   sections,
-};
-
-module.exports = { buttonMessage, listPesan, sections };
+module.exports = { buttonMessage, sections };

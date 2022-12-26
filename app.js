@@ -50,11 +50,34 @@ async function connectToWhatsApp() {
             }
 
             // console.log(`NEW ["${pesan}" ${noWa}]`);
+            const listPesan = {
+               text: `*Halo ${m.pushName}*\n\nSelamat Datang di Bot whatsapp kami\nsilakan tekan menu untuk menggunakan feature bot`,
+               footer: "©Aldhi2022",
+               buttonText: "Menu",
+               sections,
+            };
             if (!isGroup) {
                if (pesan === "ping") {
                   await sock.sendMessage(noWa, { text: "Pong" }, { quoted: messages[0] });
                } else if (!messages[0].key.fromMe && pesan === ".menu") {
-                  await sock.sendMessage(noWa, listPesan, { quoted: messages[0] });
+                  await sock.sendMessage(noWa, {
+                     text: `*Halo ${m.pushName}*\n\nSelamat Datang di Bot whatsapp kami\nsilahkan tekan menu untuk menggunakan feature bot\n\n`,
+                     footer: "©Aldhi2022",
+                     buttonText: "Menu",
+                     sections,
+                  });
+               } else if (!messages[0].key.fromMe && responseList) {
+                  //cek row id yang dipilih
+                  const pilihanlist = responseList.singleSelectReply.selectedRowId;
+                  if (pilihanlist == "nanya") {
+                     await sock.sendMessage(noWa, { text: "Anda Memilih function nanya" });
+                  } else if (pilihanlist == "bg") {
+                     await sock.sendMessage(noWa, { text: "AnAnda Memilih function ubah background" });
+                  } else if (pilihanlist == "menfes") {
+                     await sock.sendMessage(noWa, { text: "Anda Memilih function menfes" });
+                  } else if (pilihanlist == "stiker") {
+                     await sock.sendMessage(noWa, { text: "Anda Memilih function stiker" });
+                  }
                } else {
                   await sock.sendMessage(noWa, { text: `*Halo ${m.pushName}*\n\njika ingin menggunakan bot ini silahkan kirim *.menu*` }, { quoted: messages[0] });
                }
