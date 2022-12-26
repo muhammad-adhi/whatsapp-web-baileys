@@ -41,19 +41,22 @@ async function connectToWhatsApp() {
 
             //nowa dari pengirim pesan sebagai id
             const noWa = messages[0].key.remoteJid;
+            const uname = messages[0].key.participant;
 
             await sock.readMessages([messages[0].key]);
             const isGroup = noWa.endsWith("@g.us");
 
             //kecilkan semua pesan yang masuk lowercase
-            console.log(`NEW ["${pesan}" ${noWa}]`);
+            for (let m of messages) {
+               console.log("A message from", m.pushName, `["${pesan}" wa.me/${noWa.split("@")[0]}]`);
+            }
             if (!isGroup) {
                if (pesan === "ping") {
                   await sock.sendMessage(noWa, { text: "Pong" }, { quoted: messages[0] });
                } else if (!messages[0].key.fromMe && pesan === ".menu") {
                   await sock.sendMessage(noWa, listPesan, { quoted: messages[0] });
                } else {
-                  await sock.sendMessage(noWa, listPesan, { quoted: messages[0] });
+                  await sock.sendMessage(noWa, { text: `Halo @${sender} Bro jika ingin menggunakan bot ini silahkan kirim *.menu*` }, { quoted: messages[0] });
                }
             }
          }
