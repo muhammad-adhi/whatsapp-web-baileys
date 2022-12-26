@@ -1,4 +1,4 @@
-const { default: makeWASocket, MessageType, MessageOptions, Mimetype, DisconnectReason, useSingleFileAuthState, isHistoryMsg, isJidGroup } = require("@adiwajshing/baileys");
+const { default: makeWASocket, makeInMemoryStore, MessageType, MessageOptions, Mimetype, DisconnectReason, useSingleFileAuthState, isHistoryMsg, isJidGroup } = require("@adiwajshing/baileys");
 const { Boom } = require("@hapi/boom");
 const { state, saveState } = useSingleFileAuthState("./auth_info.json");
 const { buttonMessage, listPesan, sections } = require("./function/button");
@@ -22,7 +22,6 @@ async function connectToWhatsApp() {
          console.log("\n\n\n");
       }
    });
-
    sock.ev.on("creds.update", saveState);
    sock.ev.on("messages.upsert", async ({ messages, type }) => {
       if (type === "notify") {
@@ -41,22 +40,23 @@ async function connectToWhatsApp() {
 
             //nowa dari pengirim pesan sebagai id
             const noWa = messages[0].key.remoteJid;
-            const uname = messages[0].key.participant;
 
             await sock.readMessages([messages[0].key]);
             const isGroup = noWa.endsWith("@g.us");
 
             //kecilkan semua pesan yang masuk lowercase
-            for (let m of messages) {
-               console.log("A message from", m.pushName, `["${pesan}" wa.me/${noWa.split("@")[0]}]`);
+            for (var m of messages) {
+               console.log("A message from", m.pushName, `["${pesan}" ${noWa}]`);
             }
+
+            // console.log(`NEW ["${pesan}" ${noWa}]`);
             if (!isGroup) {
                if (pesan === "ping") {
                   await sock.sendMessage(noWa, { text: "Pong" }, { quoted: messages[0] });
                } else if (!messages[0].key.fromMe && pesan === ".menu") {
                   await sock.sendMessage(noWa, listPesan, { quoted: messages[0] });
                } else {
-                  await sock.sendMessage(noWa, { text: `Halo @${sender} Bro jika ingin menggunakan bot ini silahkan kirim *.menu*` }, { quoted: messages[0] });
+                  await sock.sendMessage(noWa, { text: `*Halo ${m.pushName}*\n\njika ingin menggunakan bot ini silahkan kirim *.menu*` }, { quoted: messages[0] });
                }
             }
          }
