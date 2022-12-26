@@ -1,2 +1,2 @@
 # whatsapp-web-baileys
-###run ```npm install```
+### run ```npm install```
