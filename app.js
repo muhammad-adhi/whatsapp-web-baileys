@@ -50,12 +50,6 @@ async function connectToWhatsApp() {
             }
 
             // console.log(`NEW ["${pesan}" ${noWa}]`);
-            const listPesan = {
-               text: `*Halo ${m.pushName}*\n\nSelamat Datang di Bot whatsapp kami\nsilakan tekan menu untuk menggunakan feature bot`,
-               footer: "©Aldhi2022",
-               buttonText: "Menu",
-               sections,
-            };
             if (!isGroup) {
                if (pesan === "ping") {
                   await sock.sendMessage(noWa, { text: "Pong" }, { quoted: messages[0] });
@@ -72,7 +66,7 @@ async function connectToWhatsApp() {
                   if (pilihanlist == "nanya") {
                      await sock.sendMessage(noWa, { text: "Anda Memilih function nanya" });
                   } else if (pilihanlist == "bg") {
-                     await sock.sendMessage(noWa, { text: "AnAnda Memilih function ubah background" });
+                     await sock.sendMessage(noWa, { text: "Anda Memilih function ubah background" });
                   } else if (pilihanlist == "menfes") {
                      await sock.sendMessage(noWa, { text: "Anda Memilih function menfes" });
                   } else if (pilihanlist == "stiker") {
